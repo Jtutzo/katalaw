@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:./db/katalaw;DB_CLOSE_DELAY=-1
+    username: katalaw
+    password: katalaw
+
+  flyway:
+    schemas: PUBLIC
+    locations:
+      - classpath:db/migration/common
+      - classpath:db/migration/h2
+
+  jooq:
+    sql-dialect: h2
+
+axon:
+  eventhandling:
+    processors:
+      user:
+        mode: subscribing
+
