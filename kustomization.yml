@@ -3,7 +3,6 @@ kind: Kustomization
 namePrefix: katalaw-
 commonLabels:
  app: katalaw
- env: uat
+ env: prod
 resources:
- - kubernetes/axon.yml
- - kubernetes/postgres.yml
+ - k8s/server.yml
