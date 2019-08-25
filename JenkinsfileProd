@@ -1,0 +1,48 @@
+pipeline {
+    environment {
+        registry = "jtutzo/katalaw"
+        registryCredential = 'dockerhub'
+        dockerImage = ''
+    }
+    agent none
+    stages {
+        stage('Cloning Git') {
+            agent any
+            steps {
+                git 'https://github.com/Jtutzo/katalaw.git'
+            }
+        }
+        stage('Building project') {
+            agent {
+                docker { image 'maven:3-alpine' }
+            }
+            steps{
+                sh 'mvn clean install'
+            }
+        }
+        stage('Building image') {
+            agent any
+            steps{
+                script {
+                    dockerImage = docker.build registry + ":prod"
+                }
+            }
+        }
+        stage('Deploy image') {
+            agent any
+            steps{
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+        stage('Deploy container') {
+            agent any
+            steps{
+                sh "kubectl apply -k ./"
+            }
+        }
+    }
+}
