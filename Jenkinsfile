@@ -46,7 +46,7 @@ pipeline {
         stage('Deploy containers') {
             agent any
             steps{
-                sh 'minikune status'
+                sh 'whoami'
                 sh "kubectl apply -k ./"
             }
         }
