@@ -18,7 +18,7 @@ pipeline {
             agent {
                 docker {
                     image 'maven:3-alpine'
-                    args '-u root -v /root/jenkins/.m2:/root/m2'
+                    args '-u root -v /root/jenkins/.m2:/root/.m2'
                  }
             }
             steps {
@@ -46,6 +46,7 @@ pipeline {
         stage('Deploy containers') {
             agent any
             steps{
+                sh 'minikune status'
                 sh "kubectl apply -k ./"
             }
         }
