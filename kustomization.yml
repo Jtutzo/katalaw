@@ -3,6 +3,6 @@ kind: Kustomization
 namePrefix: katalaw-
 commonLabels:
  app: katalaw
- env: prod
+ env: prd
 resources:
  - k8s/server.yml
