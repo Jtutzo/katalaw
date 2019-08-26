@@ -1,6 +1,8 @@
 pipeline {
     environment {
         registry = "jtutzo/katalaw"
+        registryCredential = 'dockerhub'
+        dockerImage = ''
     }
     agent none
     stages {
@@ -16,10 +18,26 @@ pipeline {
         }
         stage('Building image') {
             agent any
-            steps {
+            steps{
                 script {
-                    docker.build registry + ":dev"
+                    dockerImage = docker.build registry + ":prd"
                 }
+            }
+        }
+        stage('Deploy image') {
+            agent any
+            steps{
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+        stage('Deploy containers') {
+            agent any
+            steps{
+                sh "kubectl apply -k ./"
             }
         }
     }
