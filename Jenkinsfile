@@ -6,6 +6,14 @@ pipeline {
     }
     agent none
     stages {
+        stage('Properties') {
+            agent any
+            steps{
+                script {
+                    sh 'echo $BRANCH_NAME'
+                }
+            }
+        }
         stage('Build app') {
             agent {
                 docker {
