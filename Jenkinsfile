@@ -6,11 +6,19 @@ pipeline {
     }
     agent none
     stages {
+        stage('Properties') {
+            agent any
+            steps{
+                script {
+                    sh 'echo $BRANCH_NAME'
+                }
+            }
+        }
         stage('Build app') {
             agent {
                 docker {
                     image 'maven:3-alpine'
-                    args '-u root'
+                    args '-u root -v /root/jenkins/.m2:/root/.m2'
                  }
             }
             steps {
@@ -38,6 +46,7 @@ pipeline {
         stage('Deploy containers') {
             agent any
             steps{
+                sh 'minikune status'
                 sh "kubectl apply -k ./"
             }
         }
