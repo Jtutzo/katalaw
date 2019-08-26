@@ -46,7 +46,8 @@ pipeline {
         stage('Deploy containers') {
             agent any
             steps{
-                sh 'whoami'
+                sh 'kubectl cluster-info'
+                sh 'kubectl version'
                 sh "kubectl apply -k ./"
             }
         }
