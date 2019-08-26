@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
         - name: katalaw-backend
-          image: jtutzo/katalaw:dev
+          image: jtutzo/katalaw:prd
           ports:
             - containerPort: 8080
 ---
